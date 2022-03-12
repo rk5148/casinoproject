@@ -1,3 +1,5 @@
+exception Empty
+
 type suit =
   | Spade
   | Diamond
@@ -9,7 +11,15 @@ type card = {
   value : int;
 }
 
-let a_heart = { suit = Heart; value = 14 }
+let make_card suit value = { suit; value }
 
-let rec make_hearts last_val =
-  if last_val + 1 = 14 then { suit = Heart; value = 14 }
+let rec make_suit suit value =
+  match value with
+  | 14 -> []
+  | x ->
+      if x <= 13 then make_card suit value :: make_suit suit (value + 1)
+      else raise Empty
+
+let rec make_deck =
+  make_suit Spade 0 @ make_suit Diamond 0 @ make_suit Heart 0
+  @ make_suit Clubs 0

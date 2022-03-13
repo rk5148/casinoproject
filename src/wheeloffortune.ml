@@ -1,11 +1,16 @@
 (*wheel of fort*)
-open Random
-open Person
+module WheelOfFortune = struct
+  type prize =
+    | Car
+    | Lose of int
+    | House
+    | Education
+    | Nate
 
-let wheeloffortune money =
-  let possibilities_list =
-    [ Car; Lose money; House; Education; Nate ]
-  in
-  let x = Random.int 4 in
-  let _ = print_endline "Thank you for playing with us!!!!!!!" in
-  List.nth possibilities_list x
+  let prize_list = [ Car; Lose 0; House; Education; Nate ]
+
+  let wheel_of_fortune money =
+    let x = Random.int 4 in
+    let _ = print_endline "Thank you for playing with us!!!!!!!" in
+    List.nth prize_list x
+end

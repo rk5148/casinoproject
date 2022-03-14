@@ -1,4 +1,3 @@
 (executable
- (name main))
-
-; (libraries Game ANSITerminal))
+ (name main)
+ (libraries Game ANSITerminal))

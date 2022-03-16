@@ -11,3 +11,5 @@ let rec main () =
   let command = read_line () in
   if command = "Wheel of Fortune" then Wheeloffortune.wheel_of_fortune
   else YouSuck
+
+let _ = main ()

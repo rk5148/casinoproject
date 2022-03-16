@@ -4,7 +4,6 @@ type prize =
   | House
   | Education
   | Nate
-  | YouSuck
 
 val prize_to_string : prize -> unit
 val prize_list : prize list

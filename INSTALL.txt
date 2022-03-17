@@ -1,0 +1,12 @@
+Please follow these directions to install and run our game!
+
+1. Please follow the directions in the CS 3110 OCaml Setup Guide to ensure you
+   have the most recent version of OCaml
+
+2. If you haven't already, unzip the package into your preferred directory by
+   navigating to that directory in your command line and using command
+   "unzip casino.zip"
+
+3. Run command "make build" while in the same directory
+
+4. Run command "make play" while in the same directory

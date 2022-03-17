@@ -1,7 +1,9 @@
 .PHONY: test check
 
 build:
+	dune clean
 	dune build
+	rm -f casino.zip
 
 utop:
 	OCAMLRUNPARAM=b dune utop src

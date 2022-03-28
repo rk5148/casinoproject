@@ -1,5 +1,7 @@
+open Casino
+open Random
+
 (*Initializes randomizer for funtion [wheel_of_fortune]*)
-Random.self_init ()
 
 (*Defines type prize*)
 type prize =
@@ -25,4 +27,8 @@ let prize_list = [ Car; Lose 0; House; Education; Nate ]
   prizes*)
 let wheel_of_fortune () =
   let x = Random.int 4 in
-  prize_to_string (List.nth prize_list x)
+  prize_to_string (List.nth prize_list x);
+  print_endline "Would you like to spin again?";
+  let input = read_line () in
+  if input = "Yes" || input = "yes" then wheel_of_fortune ()
+  else Casino.main

@@ -43,7 +43,8 @@ let contains search target = List.mem target search
 let play_legal_helper state name_of_game all_games =
   balance state > 0
   && contains
-       (Constants.wof_commands @ Constants.slots_commands)
+       (Constants.wof_commands @ Constants.slots_commands
+      @ Constants.craps_commands)
        name_of_game
 
 let gt_to_st (gt : Games.t) =
@@ -53,11 +54,12 @@ let gt_to_st (gt : Games.t) =
     prize_list = Games.prizes gt;
   }
 
-let play state (name_of_game : string) all_games =
+let play state (name_of_game : string) (all_games : string list) =
+  let old_balance = balance state in
   match play_legal_helper state name_of_game all_games with
   | false -> Illegal
   | true ->
-      let game_t = Games.play name_of_game in
+      let game_t = Games.play name_of_game old_balance in
       let cleaned_up = gt_to_st game_t in
       let new_state =
         {

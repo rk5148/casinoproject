@@ -154,7 +154,7 @@ let craps_come_out bet is_pass =
     comeout_bet bet is_pass number
   end
 
-let rec craps_start bet =
+let rec craps bet =
   print_endline "Place your bets:";
   print_endline "Pass";
   print_endline "Don't Pass";
@@ -163,12 +163,12 @@ let rec craps_start bet =
   else if command = "Don't Pass" then craps_come_out bet false
   else if command = "Help" then begin
     print_string help_string;
-    craps_start bet
+    craps bet
   end
   else begin
     print_string
       "Invalid bet. To bet on the Pass line, type 'Pass'. To bet on \
        Don't Pass, type 'Don't Pass'. \n\
       \ If you would like help, type 'Help'.";
-    craps_start bet
+    craps bet
   end

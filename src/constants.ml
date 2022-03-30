@@ -59,7 +59,7 @@ let craps_help_string =
    you win 100).\n\n"
 
 let craps_pass_commands =
-  [ "1"; "1 "; "Pass"; "pass"; "PASS"; "Pass "; "dont pass "; "PASS " ]
+  [ "1"; "1 "; "Pass"; "pass"; "PASS"; "Pass "; "PASS " ]
 
 let craps_dontpass_commands =
   [
@@ -77,6 +77,10 @@ let craps_dontpass_commands =
     "dont pass ";
     "DON'T PASS ";
     "DONT PASS ";
+    "Dont pass";
+    "Don't pass";
+    "don't Pass";
+    "dont Pass";
   ]
 
 let help_commands =

@@ -21,7 +21,7 @@ let get_command_from_user state =
     \ (1): Wheel of Fortune\n\
     \ (2): Slots\n\
     \ (3): Craps\n\n\
-    \    > ";
+    \ > ";
   read_line ()
 
 let check_bet state bet =
@@ -34,6 +34,11 @@ let get_bet_from_user state =
     ^ "\n");
   let bet = int_of_string (read_line ()) in
   if check_bet state bet then bet else -1
+
+(* let find_and_play_game state name = if name = "wheel of fortune" then
+   { name = state.name } Wheeloffortune.wheel_of_fortune state () (*
+   else if name = "slots" then Slots.slots () else if name = "deal\n 7"
+   then Deck.play_deck () *) else state *)
 
 let rec string_list_to_string lst divider =
   match lst with
@@ -87,23 +92,29 @@ let rec play state =
               print_string "\n";
               play l))
 
+let rec main_helper name =
+  print_string
+    "\n\
+     Please enter the amount of money you will be bringing into the \
+     casino:\n\
+     > ";
+  match read_line () with
+  | exception End_of_file -> ()
+  | start_money -> (
+      try play (State.init_state name (int_of_string start_money)) with
+      | Sys_error f ->
+          print_string "Illegal dollar amount (whole dollars only).\n";
+          main_helper name
+      | Failure string ->
+          print_string "Illegal dollar amount (whole dollars only).\n";
+          main_helper name)
+
 (*Runs the game*)
 let rec main () =
   print_string
-    ("\n\nWelcome to The Casino!\n" ^ "Please enter your name:\n>");
+    ("\n\nWelcome to The Casino!\n" ^ "Please enter your name:\n> ");
   match read_line () with
   | exception End_of_file -> ()
-  | name -> (
-      print_string
-        "\n\
-         Please enter the amount of money you will be bringing into \
-         the casino:\n\
-         >";
-      match read_line () with
-      | exception End_of_file -> ()
-      | start_money -> (
-          try play (State.init_state name (int_of_string start_money))
-          with Sys_error f ->
-            print_string "Illegal dollar amount, please restart game."))
+  | name -> main_helper name
 
 let () = main ()

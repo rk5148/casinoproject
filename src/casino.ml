@@ -16,7 +16,8 @@ let all_games = [ "wheel of fortune"; "slots"; "craps" ]
 
 let get_command_from_user state =
   print_string
-    "What game do you want to play? \n\
+    "\n\
+     What game do you want to play? \n\
     \ (1): Wheel of Fortune\n\
     \ (2): Slots\n\
     \ (3): Craps\n\n\
@@ -54,8 +55,12 @@ let rec play state =
   | Continue -> (
       let command = get_command_from_user state in
       match Command.parse command with
+      | exception Command.Malformed ->
+          print_string
+            "\nInvalid input. Try again by typing \"play\" [game].\n";
+          play state
       | Quit ->
-          print_string "THANKS FOR PLAYING :)\n";
+          print_string "\nTHANKS FOR PLAYING :)\n";
           Stdlib.exit 0
       | Family ->
           (* print_string ("Your familial status: " ^ State.family state
@@ -83,7 +88,9 @@ let rec play state =
           | Illegal ->
               print_string "Illegal PLAY entry, please try again\n";
               play state
-          | Legal l -> play l))
+          | Legal l ->
+              print_string "\n";
+              play l))
 
 (*Runs the game*)
 let rec main () =
@@ -102,6 +109,6 @@ let rec main () =
       | start_money -> (
           try play (State.init_state name (int_of_string start_money))
           with Sys_error f ->
-            print_string "Illegal money entry, please restart game."))
+            print_string "Illegal dollar amount, please restart game."))
 
 let () = main ()

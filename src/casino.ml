@@ -35,11 +35,6 @@ let get_bet_from_user state =
   let bet = int_of_string (read_line ()) in
   if check_bet state bet then bet else -1
 
-(* let find_and_play_game state name = if name = "wheel of fortune" then
-   { name = state.name } Wheeloffortune.wheel_of_fortune state () (*
-   else if name = "slots" then Slots.slots () else if name = "deal\n 7"
-   then Deck.play_deck () *) else state *)
-
 let rec string_list_to_string lst divider =
   match lst with
   | [] -> ""

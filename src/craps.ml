@@ -154,14 +154,21 @@ let craps_come_out bet is_pass =
     comeout_bet bet is_pass number
   end
 
+let is_pass command = List.mem command Constants.craps_pass_commands
+
+let is_dont_pass command =
+  List.mem command Constants.craps_dontpass_commands
+
+let is_help command = List.mem command Constants.help_commands
+
 let rec craps bet =
-  print_endline "Place your bets:";
-  print_endline "Pass";
-  print_endline "Don't Pass";
+  print_endline "\nPlace your bets:";
+  print_endline "(1): Pass";
+  print_endline "(2): Don't Pass";
   let command = read_line () in
-  if command = "Pass" then craps_come_out bet true
-  else if command = "Don't Pass" then craps_come_out bet false
-  else if command = "Help" then begin
+  if is_pass command then craps_come_out bet true
+  else if is_dont_pass command then craps_come_out bet false
+  else if is_help command then begin
     print_string help_string;
     craps bet
   end

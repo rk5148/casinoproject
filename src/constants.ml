@@ -22,7 +22,7 @@ let craps_commands =
 
 let craps_help_string =
   "Craps is a game of wagers between you (the shooter) and the bank \
-   involving just a pair dice! When you start, you will be asked to \
+   involving just a pair of dice! When you start, you will be asked to \
    place bets on either the Pass line (the bet for the shooter to win) \
    or Don't Pass (the bet for the shooter to lose). \n\
   \ \n\
@@ -56,4 +56,28 @@ let craps_help_string =
    established, but it can be taken down or reduced. \n\
   \ \n\
    Both the Pass and Don't Pass bets pay even money (e.g. you bet 100, \
-   you win 100)."
+   you win 100).\n\n"
+
+let craps_pass_commands =
+  [ "1"; "1 "; "Pass"; "pass"; "PASS"; "Pass "; "dont pass "; "PASS " ]
+
+let craps_dontpass_commands =
+  [
+    "2";
+    "2 ";
+    "Don't Pass";
+    "Dont Pass";
+    "don't pass";
+    "dont pass";
+    "DON'T PASS";
+    "DONT PASS";
+    "Don't Pass ";
+    "Dont Pass ";
+    "don't pass ";
+    "dont pass ";
+    "DON'T PASS ";
+    "DONT PASS ";
+  ]
+
+let help_commands =
+  [ "0"; "0 "; "Help"; "help"; "HELP"; "Help "; "help "; "HELP " ]

@@ -48,36 +48,42 @@ let rec string_list_to_string lst divider =
       else string_list_to_string t divider
 
 let rec play state =
-  let command = get_command_from_user state in
-  match Command.parse command with
-  | Quit ->
-      print_string "THANKS FOR PLAYING :)\n";
-      Stdlib.exit 0
-  | Family ->
-      (* print_string ("Your familial status: " ^ State.family state ^
-         "\n"); *)
-      play state
-  | Balance ->
-      print_string
-        ("Your balance: " ^ string_of_int (State.balance state) ^ "\n");
-      play state
-  | Prizes ->
-      print_string
-        ("Your prizes: "
-        ^ string_list_to_string (State.prizes state) ", "
-        ^ "\n");
-      play state
-  | Play name_of_game -> (
-      let result =
-        State.play state
-          (string_list_to_string name_of_game " ")
-          all_games
-      in
-      match result with
-      | Illegal ->
-          print_string "Illegal PLAY entry, please try again\n";
+  let continue = State.play_st state in
+  match continue with
+  | Lose l -> print_string l
+  | Continue -> (
+      let command = get_command_from_user state in
+      match Command.parse command with
+      | Quit ->
+          print_string "THANKS FOR PLAYING :)\n";
+          Stdlib.exit 0
+      | Family ->
+          (* print_string ("Your familial status: " ^ State.family state
+             ^ "\n"); *)
           play state
-      | Legal l -> play l)
+      | Balance ->
+          print_string
+            ("Your balance: "
+            ^ string_of_int (State.balance state)
+            ^ "\n");
+          play state
+      | Prizes ->
+          print_string
+            ("Your prizes: "
+            ^ string_list_to_string (State.prizes state) ", "
+            ^ "\n");
+          play state
+      | Play name_of_game -> (
+          let result =
+            State.play state
+              (string_list_to_string name_of_game " ")
+              all_games
+          in
+          match result with
+          | Illegal ->
+              print_string "Illegal PLAY entry, please try again\n";
+              play state
+          | Legal l -> play l))
 
 (*Runs the game*)
 let rec main () =

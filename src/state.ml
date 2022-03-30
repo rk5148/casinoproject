@@ -13,6 +13,10 @@ type result =
   | Legal of t2
   | Illegal
 
+type play_state =
+  | Lose of string
+  | Continue
+
 let init_state name start_money =
   {
     name;
@@ -53,6 +57,10 @@ let gt_to_st (gt : Games.t) =
     balance = Games.balance gt;
     prize_list = Games.prizes gt;
   }
+
+let play_st st =
+  if balance st = 0 then Lose "You're out of money, you lose. :(\n"
+  else Continue
 
 let play state (name_of_game : string) (all_games : string list) =
   let old_balance = balance state in

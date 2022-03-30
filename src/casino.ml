@@ -12,29 +12,14 @@ let rec string_list_to_string str =
   | [ x ] -> String.lowercase_ascii x
   | h :: t -> String.lowercase_ascii h ^ " " ^ string_list_to_string t
 
-let all_games = [ "wheel of fortune"; "slots"; "Deal 7" ]
-
-let deal7_commands =
-  [
-    "3";
-    "3 ";
-    "Deal 7";
-    "deal 7";
-    "DEAL 7";
-    "Deal 7 ";
-    "deal 7 ";
-    "DEAL 7 ";
-    "Deal7";
-    "deal7";
-    "DEAL7";
-  ]
+let all_games = [ "wheel of fortune"; "slots"; "craps" ]
 
 let get_command_from_user state =
   print_string
     "What game do you want to play? \n\
-    \ (1): Wheel of Fortune, \n\
-    \ (2): Slots, \n\
-    \ (3): Deal 7\n\n\
+    \ (1): Wheel of Fortune\n\
+    \ (2): Slots\n\
+    \ (3): Craps\n\n\
     \    > ";
   read_line ()
 

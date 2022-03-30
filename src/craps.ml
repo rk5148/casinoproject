@@ -18,7 +18,7 @@ let roll_two_dice num =
   number
 
 let rec craps_point bet is_pass hit_point point =
-  let number = roll_two_dice 5 in
+  let number = roll_two_dice 6 in
   if number = 7 && (not hit_point) && is_pass then begin
     print_endline "Seven-out! \nYou've lost.";
     { winnings = -1 * bet }
@@ -128,7 +128,7 @@ let rec comeout_bet bet is_pass point =
   end
 
 let craps_come_out bet is_pass =
-  let number = roll_two_dice 5 in
+  let number = roll_two_dice 6 in
   if (number = 2 || number = 3 || number = 12) && is_pass then begin
     print_endline (string_of_int number ^ " craps! \nYou've lost.");
     { winnings = -1 * bet }

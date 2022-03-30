@@ -2,6 +2,9 @@ Random.self_init ()
 
 open Constants
 
+type t = { winnings : int }
+
+let winnings state = state.winnings
 let help_string = Constants.craps_help_string
 
 let roll_two_dice num =
@@ -14,27 +17,39 @@ let roll_two_dice num =
 
 let rec craps_point bet is_pass hit_point point =
   let number = roll_two_dice 5 in
-  if number = 7 && (not hit_point) && is_pass then
-    print_endline "Seven-out! You've lost."
-  else if number = 7 && (not hit_point) && not is_pass then
+  if number = 7 && (not hit_point) && is_pass then begin
+    print_endline "Seven-out! You've lost.";
+    { winnings = -1 * bet }
+  end
+  else if number = 7 && (not hit_point) && not is_pass then begin
     print_endline
       ("Seven-out! You've won "
       ^ string_of_int (2 * bet)
-      ^ " Casino Cash.")
-  else if number = 7 && hit_point && is_pass then
-    print_endline "Seven-out! You've lost."
-  else if number = 7 && hit_point && not is_pass then
+      ^ " Casino Cash.");
+    { winnings = 2 * bet }
+  end
+  else if number = 7 && hit_point && is_pass then begin
+    print_endline "Seven-out! You've lost.";
+    { winnings = -1 * bet }
+  end
+  else if number = 7 && hit_point && not is_pass then begin
     print_endline
       ("Seven-out! You've won "
       ^ string_of_int (2 * bet)
-      ^ " Casino Cash.")
-  else if number = point && is_pass then
+      ^ " Casino Cash.");
+    { winnings = 2 * bet }
+  end
+  else if number = point && is_pass then begin
     print_endline
       ("Point hits! You've won "
       ^ string_of_int (2 * bet)
-      ^ " Casino Cash.")
-  else if number = point && not is_pass then
-    print_endline "Point hits! You've lost."
+      ^ " Casino Cash.");
+    { winnings = 2 * bet }
+  end
+  else if number = point && not is_pass then begin
+    print_endline "Point hits! You've lost.";
+    { winnings = -1 * bet }
+  end
   else craps_point bet is_pass hit_point point
 
 let rec comeout_notpass_bet bet is_pass point =
@@ -42,12 +57,16 @@ let rec comeout_notpass_bet bet is_pass point =
   match int_of_string_opt (read_line ()) with
   | Some int ->
       if int <= bet && int > 0 then craps_point int is_pass false point
-      else if bet = 0 then print_endline "Thanks for playing!"
-      else
+      else if bet = 0 then begin
+        print_endline "Thanks for playing!";
+        { winnings = 0 }
+      end
+      else begin
         print_endline
           "You must bet an amount greater than or equal to your \
            original bet.";
-      comeout_notpass_bet bet is_pass point
+        comeout_notpass_bet bet is_pass point
+      end
   | None ->
       print_endline
         "Please type in a valid bet less than or equal to your \
@@ -60,11 +79,12 @@ let rec comeout_pass_bet bet is_pass point =
   match int_of_string_opt (read_line ()) with
   | Some int ->
       if int >= bet then craps_point int is_pass false point
-      else
+      else begin
         print_endline
           "You must bet an amount greater than or equal to your \
            original bet.";
-      comeout_pass_bet bet is_pass point
+        comeout_pass_bet bet is_pass point
+      end
   | None ->
       print_endline
         "Please type in a valid bet greater than or equal to your \
@@ -79,11 +99,12 @@ let rec comeout_bet bet is_pass point =
       comeout_pass_bet bet is_pass point
     else if command = "no" || command = "No" then
       craps_point bet is_pass false point
-    else
+    else begin
       print_endline
         "I didn't understand you. Type 'yes' or 'Yes' to make a new \
          bet, or type 'no' or 'No' to continue.";
-    comeout_bet bet is_pass point
+      comeout_bet bet is_pass point
+    end
   end
   else begin
     print_endline "Would you like to reduce or take down your bet?";
@@ -92,33 +113,46 @@ let rec comeout_bet bet is_pass point =
       comeout_notpass_bet bet is_pass point
     else if command = "no" || command = "No" then
       craps_point bet is_pass false point
-    else
+    else begin
       print_endline
         "I didn't understand you. Type 'yes' or 'Yes' to make a new \
          bet, or type 'no' or 'No' to continue.";
-    comeout_bet bet is_pass point
+      comeout_bet bet is_pass point
+    end
   end
 
 let craps_come_out bet is_pass =
   let number = roll_two_dice 5 in
-  if (number = 2 || number = 3 || number = 12) && is_pass then
-    print_endline (string_of_int number ^ " craps! \n You've lost.")
-  else if (number = 2 || number = 3 || number = 12) && not is_pass then
+  if (number = 2 || number = 3 || number = 12) && is_pass then begin
+    print_endline (string_of_int number ^ " craps! \n You've lost.");
+    { winnings = -1 * bet }
+  end
+  else if (number = 2 || number = 3 || number = 12) && not is_pass then begin
     print_endline
       (string_of_int number ^ " craps! \n You've won "
       ^ string_of_int (2 * bet)
-      ^ " Casino Cash.")
-  else if number = 12 && not is_pass then
-    print_endline (string_of_int number ^ " craps! \n It's a push!")
-  else if (number = 7 || number = 11) && is_pass then
+      ^ " Casino Cash.");
+    { winnings = 2 * bet }
+  end
+  else if number = 12 && not is_pass then begin
+    print_endline (string_of_int number ^ " craps! \n It's a push!");
+    { winnings = 0 }
+  end
+  else if (number = 7 || number = 11) && is_pass then begin
     print_endline
       (string_of_int number ^ " natural! \n You've won "
       ^ string_of_int (2 * bet)
-      ^ " Casino Cash.")
-  else if (number = 7 || number = 11) && not is_pass then
-    print_endline (string_of_int number ^ " natural! \n You've lost.")
-  else print_endline ("Point established: " ^ string_of_int number ^ ".");
-  comeout_bet bet is_pass number
+      ^ " Casino Cash.");
+    { winnings = 2 * bet }
+  end
+  else if (number = 7 || number = 11) && not is_pass then begin
+    print_endline (string_of_int number ^ " natural! \n You've lost.");
+    { winnings = -1 * bet }
+  end
+  else begin
+    print_endline ("Point established: " ^ string_of_int number ^ ".");
+    comeout_bet bet is_pass number
+  end
 
 let rec craps_start bet =
   print_endline "Place your bets:";
@@ -131,9 +165,10 @@ let rec craps_start bet =
     print_string help_string;
     craps_start bet
   end
-  else
+  else begin
     print_string
       "Invalid bet. To bet on the Pass line, type 'Pass'. To bet on \
        Don't Pass, type 'Don't Pass'. \n\
       \ If you would like help, type 'Help'.";
-  craps_start bet
+    craps_start bet
+  end

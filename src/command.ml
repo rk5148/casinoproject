@@ -3,7 +3,8 @@ type object_phrase = string list
 type command =
   | Quit
   | Family
-  | Bank
+  | Balance
+  | Prizes
   | Play of object_phrase
 
 exception Empty
@@ -26,10 +27,15 @@ let is_play_correctly_formed (command_list_without_go : string list) =
 let is_quit_correctly_formed (command_list_without_quit : string list) =
   if List.length command_list_without_quit > 0 then false else true
 
-let is_bank_correctly_formed (command_list_without_quit : string list) =
+let is_balance_correctly_formed
+    (command_list_without_quit : string list) =
   if List.length command_list_without_quit > 0 then false else true
 
 let is_family_correctly_formed (command_list_without_quit : string list)
+    =
+  if List.length command_list_without_quit > 0 then false else true
+
+let is_prizes_correctly_formed (command_list_without_quit : string list)
     =
   if List.length command_list_without_quit > 0 then false else true
 
@@ -50,16 +56,23 @@ let parse str =
         (command_without_first (command_to_list str))
     then Play (command_without_first (command_to_list str))
     else raise Malformed
-  else if first_element_of_command (command_to_list str) = "bank" then
+  else if first_element_of_command (command_to_list str) = "balance"
+  then
     if
-      is_bank_correctly_formed
+      is_balance_correctly_formed
         (command_without_first (command_to_list str))
-    then Bank
+    then Balance
     else raise Malformed
   else if first_element_of_command (command_to_list str) = "family" then
     if
       is_family_correctly_formed
         (command_without_first (command_to_list str))
     then Family
+    else raise Malformed
+  else if first_element_of_command (command_to_list str) = "prizes" then
+    if
+      is_prizes_correctly_formed
+        (command_without_first (command_to_list str))
+    then Prizes
     else raise Malformed
   else raise Malformed

@@ -1,56 +1,69 @@
-open Command
+(* open Command *)
+open Games
+open Constants
 
-type t = {
-  bank : int;
+type t2 = {
   name : string;
-  family_status : string;
+  balance : int;
+  (* family_status : string; *)
+  prize_list : string list;
 }
 
 type result =
-  | Legal of t
+  | Legal of t2
   | Illegal
 
-type win_cond =
-  | Lose of string
-  | Continue
-
 let init_state name start_money =
-  { name; bank = start_money; family_status = "Lonely" }
+  {
+    name;
+    balance = start_money;
+    (* family_status = "Lonely"; *)
+    prize_list = [];
+  }
 
-let bank st = st.bank
-let family st = st.family_status
+let name st = st.name
+let balance st = st.balance
 
-let rec string_list_to_string lst =
-  match lst with
-  | [] -> ""
-  | [ x ] -> x
-  | h :: t -> h ^ "\n" ^ string_list_to_string t
+(* let family st = st.family_status *)
+let prizes st = st.prize_list
 
-let rec print_list = function
-  | [] -> ""
-  | h :: t ->
-      print_string (h ^ "\n");
-      print_list t
+(* let rec string_list_to_string lst = match lst with | [] -> "" | [ x ]
+   -> x | h :: t -> h ^ "\n" ^ string_list_to_string t *)
 
-let string_to_string_list str =
-  str |> String.split_on_char ' ' |> List.filter (fun x -> x <> "")
+(* let rec print_list = function | [] -> "" | h :: t -> print_string (h
+   ^ "\n"); print_list t *)
+
+(* let string_to_string_list str = str |> String.split_on_char ' ' |>
+   List.filter (fun x -> x <> "") *)
 
 let contains search target = List.mem target search
 
-let string_list_to_string lst =
-  match lst with
-  | [] -> ""
-  | [ x ] -> x
-  | h :: t -> h ^ ", " ^ string_list_to_string t
+(* let string_list_to_string lst = match lst with | [] -> "" | [ x ] ->
+   x | h :: t -> h ^ ", " ^ string_list_to_string t *)
+let play_legal_helper state name_of_game all_games =
+  balance state > 0
+  && contains
+       (Constants.wof_commands @ Constants.slots_commands)
+       name_of_game
 
-let play (game : string) (bet : int) (st : t) = print_string ""
-(* if game = let all_exits = try Some (Adventure.exits adv
-   st.current_room) with UnknownRoom _ -> None in match all_exits with |
-   None -> Illegal | Some exit -> if List.mem ex exit then let
-   room_to_move_to = Adventure.next_room adv st.current_room ex in let
-   visited_rooms = List.sort_uniq compare (room_to_move_to ::
-   st.visited) in Legal { current_room = room_to_move_to; visited =
-   visited_rooms; inventory = st.inventory; not_picked_up =
-   st.not_picked_up; score = (if List.mem room_to_move_to st.visited
-   then st.score else st.score + Adventure.points adv room_to_move_to);
-   already_got_points = st.already_got_points; } else Illegal *)
+let gt_to_st (gt : Games.t) =
+  {
+    name = Games.name gt;
+    balance = Games.balance gt;
+    prize_list = Games.prizes gt;
+  }
+
+let play state (name_of_game : string) all_games =
+  match play_legal_helper state name_of_game all_games with
+  | false -> Illegal
+  | true ->
+      let game_t = Games.play name_of_game in
+      let cleaned_up = gt_to_st game_t in
+      let new_state =
+        {
+          name = name state ^ name cleaned_up;
+          balance = balance cleaned_up + balance state;
+          prize_list = prizes cleaned_up @ prizes state;
+        }
+      in
+      Legal new_state

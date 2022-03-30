@@ -1,9 +1,8 @@
 (*Open all relevant files (game files)*)
 (* open Yojson.Basic.Util *)
-open Player
-open Wheeloffortune
-open Slots
-open Deck
+(* open Wheeloffortune *)
+(* open Slots *)
+(* open Deck *)
 open State
 open Command
 
@@ -13,26 +12,7 @@ let rec string_list_to_string str =
   | [ x ] -> String.lowercase_ascii x
   | h :: t -> String.lowercase_ascii h ^ " " ^ string_list_to_string t
 
-let all_game_names = [ "wheeloffortune"; "slots"; "Deal 7" ]
-
-let wof_commands =
-  [
-    "1";
-    "1 ";
-    "Wheel of Fortune";
-    "wheel of fortune";
-    "WHEEL OF FORTUNE";
-    "Wheel of Fortune ";
-    "wheel of fortune ";
-    "WHEEL OF FORTUNE ";
-    "wof";
-    "WOF";
-    "wof ";
-    "WOF ";
-  ]
-
-let slots_commands =
-  [ "2"; "2 "; "Slots"; "slots"; "SLOTS"; "Slots "; "slots "; "SLOTS " ]
+let all_games = [ "wheel of fortune"; "slots"; "Deal 7" ]
 
 let deal7_commands =
   [
@@ -59,21 +39,28 @@ let get_command_from_user state =
   read_line ()
 
 let check_bet state bet =
-  if bet <= State.bank state then true else false
+  if bet <= State.balance state then true else false
 
 let get_bet_from_user state =
   print_string
     ("How much do you want to bet? You can bet up to "
-    ^ string_of_int (State.bank state)
+    ^ string_of_int (State.balance state)
     ^ "\n");
   let bet = int_of_string (read_line ()) in
   if check_bet state bet then bet else -1
 
-let find_and_play_game state name =
-  if name = "wheel of fortune" then Wheeloffortune.wheel_of_fortune ()
-  else if name = "slots" then Slots.slots ()
-  else if name = "deal 7" then Deck.play_deck ()
-  else print_string "INVALID INPUT"
+(* let find_and_play_game state name = if name = "wheel of fortune" then
+   { name = state.name } Wheeloffortune.wheel_of_fortune state () (*
+   else if name = "slots" then Slots.slots () else if name = "deal\n 7"
+   then Deck.play_deck () *) else state *)
+
+let rec string_list_to_string lst divider =
+  match lst with
+  | [] -> ""
+  | [ x ] -> x
+  | h :: t ->
+      if h <> "" then h ^ divider ^ string_list_to_string t divider
+      else string_list_to_string t divider
 
 let rec play state =
   let command = get_command_from_user state in
@@ -82,14 +69,30 @@ let rec play state =
       print_string "THANKS FOR PLAYING :)\n";
       Stdlib.exit 0
   | Family ->
-      print_string ("Your familial status: " ^ State.family state ^ "\n")
-  | Bank ->
+      (* print_string ("Your familial status: " ^ State.family state ^
+         "\n"); *)
+      play state
+  | Balance ->
       print_string
-        ("Your bank: " ^ string_of_int (State.bank state) ^ "\n")
-  | Play p ->
-      let bet = get_bet_from_user state in
-      if bet = -1 then print_string "Illegal bet, try again"
-      else find_and_play_game state (string_list_to_string p)
+        ("Your balance: " ^ string_of_int (State.balance state) ^ "\n");
+      play state
+  | Prizes ->
+      print_string
+        ("Your prizes: "
+        ^ string_list_to_string (State.prizes state) ", "
+        ^ "\n");
+      play state
+  | Play name_of_game -> (
+      let result =
+        State.play state
+          (string_list_to_string name_of_game " ")
+          all_games
+      in
+      match result with
+      | Illegal ->
+          print_string "Illegal PLAY entry, please try again\n";
+          play state
+      | Legal l -> play l)
 
 (*Runs the game*)
 let rec main () =

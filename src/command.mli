@@ -22,7 +22,8 @@ type object_phrase = string list
 type command =
   | Quit
   | Family
-  | Bank
+  | Balance
+  | Prizes
   | Play of object_phrase
 
 exception Empty

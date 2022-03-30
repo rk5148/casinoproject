@@ -1,7 +1,7 @@
-open Casino
-open Random
+Random.self_init ()
 
 (*Initializes randomizer for funtion [wheel_of_fortune]*)
+type t = { prize : string }
 
 (*Defines type prize*)
 type prize =
@@ -9,7 +9,8 @@ type prize =
   | Lose of int
   | House
   | Education
-  | Nate
+
+let prize state = state.prize
 
 (*Matches given prize with the output string to console*)
 let prize_to_string (prize : prize) =
@@ -18,17 +19,26 @@ let prize_to_string (prize : prize) =
   | Lose n -> print_endline "You're trash at this game"
   | House -> print_endline "You've won a House. Knock knock."
   | Education -> print_endline "You've won an Education. Big woop."
-  | Nate -> print_endline "You've won Nate. OOoooo."
+
+let prize_id (prize : prize) =
+  match prize with
+  | Car -> "Car"
+  | Lose n -> ""
+  | House -> "House"
+  | Education -> "Education"
 
 (*All possible prizes placed in a list*)
-let prize_list = [ Car; Lose 0; House; Education; Nate ]
+let prize_list = [ Car; Lose 0; House; Education ]
 
 (*Main running function to get a random prize from the list of possible
   prizes*)
 let wheel_of_fortune () =
   let x = Random.int 4 in
   prize_to_string (List.nth prize_list x);
-  print_endline "Would you like to spin again?";
-  let input = read_line () in
-  if input = "Yes" || input = "yes" then wheel_of_fortune ()
-  else Casino.main
+  { prize = prize_id (List.nth prize_list x) }
+(* State.new_state_helper st.balance st.name st.family_status (prize_id
+   (List.nth prize_list x) :: st.prize_list) *)
+
+(* print_endline "Would you like to spin again?"; read_line () *)
+(* in if input = "Yes" || input = "yes" then wheel_of_fortune () else
+   Casino.main *)

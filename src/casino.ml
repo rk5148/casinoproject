@@ -20,8 +20,9 @@ let get_command_from_user state =
      What game do you want to play? \n\
     \ (1): Wheel of Fortune\n\
     \ (2): Slots\n\
-    \ (3): Craps\n\n\
-    \ > ";
+    \ (3): Craps\n\
+    \ Valid commands: play ___, quit, balance, prizes\n\n\
+    \     > ";
   read_line ()
 
 let check_bet state bet =
@@ -60,7 +61,10 @@ let rec play state =
             "\nInvalid input. Try again by typing \"play\" [game].\n";
           play state
       | Quit ->
-          print_string "\nTHANKS FOR PLAYING :)\n";
+          print_string
+            ("\nYour balance: "
+            ^ string_of_int (State.balance state)
+            ^ "\nTHANKS FOR PLAYING :)\n\n");
           Stdlib.exit 0
       | Family ->
           (* print_string ("Your familial status: " ^ State.family state

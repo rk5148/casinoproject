@@ -12,5 +12,3 @@ Please follow these directions to install and run our game!
 4. Run command "make play" to start the game
 
 5. Type into terminal to interact with game
-
-6. If you want to run the game again, run "make play" again

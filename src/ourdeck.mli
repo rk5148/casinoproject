@@ -10,6 +10,7 @@ type card = {
   value : int;
 }
 (** Declares type of a card, requring a valid [suit] and valid [value]*)
+val value_of_card : card -> int
 
 val make_card : suit -> int -> card
 (** Creates a card with given [suit] and [value]*)

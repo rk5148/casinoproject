@@ -1,8 +1,3 @@
-(*Open all relevant files (game files)*)
-(* open Yojson.Basic.Util *)
-(* open Wheeloffortune *)
-(* open Slots *)
-(* open Deck *)
 open State
 open Command
 

@@ -1,5 +1,5 @@
 open OUnit2
-open Casino
+open Library
 
 (** [write the test plan shit here]*)
 

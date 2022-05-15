@@ -7,20 +7,15 @@ let score card =
   match b with
   | x -> if x > 10 && x < 14 then 0 else if x = 14 then 1 else x
 
-let score_hand card_list =
+let rec score_hand card_list =
   match card_list with
   | [] -> raise EmptyHand
-  | o :: t -> score o + score t
+  | o :: t -> score o + score_hand t
 
-let rec hit () =
-  print_endline "Would you like to hit (y/n)";
-  let new_command = read_line () in
-  match new_command with
-  | "y" -> Ourdeck.pull_card new_deck 1
-  | "n" -> ()
-  | _ ->
-      print_endline "Invalid input";
-      hit ()
+(* let rec hit () = print_endline "Would you like to hit (y/n)"; let
+   new_command = read_line () in match new_command with | "y" ->
+   Ourdeck.pull_card new_deck 1 | "n" -> () | _ -> print_endline
+   "Invalid input"; hit () *)
 
 let baccarat () =
   print_endline "How much money would you like to bet?";

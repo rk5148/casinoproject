@@ -1,5 +1,6 @@
 open State
 open Command
+module Deck = Ourdeck
 
 let rec string_list_to_string str =
   match str with

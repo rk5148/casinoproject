@@ -1,5 +1,6 @@
 open Wheeloffortune
 open Slots
+open Craps
 open Constants
 
 exception GameNotFound

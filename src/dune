@@ -1,2 +1,3 @@
 (library
- (name casino))
+ (name library)
+ (public_name Library))

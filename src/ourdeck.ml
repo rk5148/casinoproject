@@ -21,6 +21,12 @@ type card = {
 
 let value_of_card card = card.value
 
+let compare_card card1 card2 : int =
+  if value_of_card card1 > value_of_card card2 then 1
+  else if value_of_card card1 < value_of_card card2 then -1
+  else if value_of_card card1 = value_of_card card2 then 0
+  else raise (BadValue "Card Value Error")
+
 let make_card suit value =
   if value > 14 || value < 2 then
     raise

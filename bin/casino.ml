@@ -6,7 +6,7 @@ let rec string_list_to_string str =
   | [ x ] -> String.lowercase_ascii x
   | h :: t -> String.lowercase_ascii h ^ " " ^ string_list_to_string t
 
-let all_games = [ "wheel of fortune"; "slots"; "craps" ]
+let all_games = [ "wheel of fortune"; "slots"; "craps"; "war" ]
 
 let get_command_from_user state =
   print_string
@@ -15,6 +15,7 @@ let get_command_from_user state =
     \ (1): Wheel of Fortune\n\
     \ (2): Slots\n\
     \ (3): Craps\n\
+    \ (4): War\n\
     \ Valid commands: play ___, quit, balance, prizes\n\n\
     \     > ";
   read_line ()

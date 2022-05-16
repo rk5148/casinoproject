@@ -83,5 +83,19 @@ let craps_dontpass_commands =
     "dont Pass";
   ]
 
+let war_commands =
+  [ "4"; "4 "; "War"; "war"; "WAR"; "War "; "war "; "WAR " ]
+
+let war_help_string = "To be written later"
+
+let yes_commands =
+  [ "y"; "y "; "Y"; "Y "; "yes"; "yes "; "Yes"; "Yes "; "YES"; "YES " ]
+
+let no_commands =
+  [ "n"; "n "; "N"; "N "; "no"; "no "; "No"; "No "; "NO"; "NO " ]
+
 let help_commands =
   [ "0"; "0 "; "Help"; "help"; "HELP"; "Help "; "help "; "HELP " ]
+
+let game_commands =
+  wof_commands @ slots_commands @ craps_commands @ war_commands

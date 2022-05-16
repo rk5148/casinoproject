@@ -45,11 +45,7 @@ let contains search target = List.mem target search
 (* let string_list_to_string lst = match lst with | [] -> "" | [ x ] ->
    x | h :: t -> h ^ ", " ^ string_list_to_string t *)
 let play_legal_helper state name_of_game all_games =
-  balance state > 0
-  && contains
-       (Constants.wof_commands @ Constants.slots_commands
-      @ Constants.craps_commands)
-       name_of_game
+  balance state > 0 && contains Constants.game_commands name_of_game
 
 let gt_to_st (gt : Games.t) =
   {

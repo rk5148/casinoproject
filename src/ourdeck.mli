@@ -19,6 +19,11 @@ val value_of_card : card -> int
 (** [value_of_card card] is the numerical value of the card. Requires:
     [card] is a valid card. *)
 
+val compare_card : card -> card -> int
+(** [compare_card card1 card2 ] is [1] if value_of_card card1 >
+    value_of_card card2, [-1] if value_of_card card1 < value_of_card
+    card2, or [0] if value_of_card card1 = value_of_card card2. *)
+
 val make_card : suit -> int -> card
 (**[make_card suit value] creates a card with given [suit] and [value].
    Requires: [card] is a valid card, 2 <= [value] <= 14. *)

@@ -5,6 +5,7 @@ exception InvalidBet
 exception DealingError
 
 let minimumbet = 5
+let is_minimum bet = bet > minimumbet
 
 type t = { winnings : int }
 
@@ -25,48 +26,70 @@ type totalbet = {
 let after_bet balance primary tie war = balance - primary - tie - war
 
 let rec get_primary_bet balance =
-  let primary =
-    int_of_string (read_line (print_endline "Primary Bet?"))
-  in
-  if after_bet balance 0 0 0 > minimumbet then
-    { primary; tie = 0; war = (0, War) }
-  else (
-    print_endline "Insufficient Funds. Try again.";
-    get_primary_bet balance)
+  try
+    let primary =
+      int_of_string (read_line (print_endline "Primary Bet?"))
+    in
+    if is_minimum (after_bet balance 0 0 0) then
+      { primary; tie = 0; war = (0, War) }
+    else (
+      print_endline "Insufficient Funds. Try again.";
+      get_primary_bet balance)
+  with
+  | Sys_error f ->
+      print_string "Illegal dollar amount (whole dollars only).\n";
+      get_primary_bet balance
+  | Failure string ->
+      print_string "Illegal dollar amount (whole dollars only).\n";
+      get_primary_bet balance
 
 let rec get_tie_bet balance primary =
-  let tie = int_of_string (read_line (print_endline "Tie Bet?")) in
-  if after_bet balance primary 0 0 > minimumbet && primary >= minimumbet
-  then { primary; tie; war = (0, War) }
-  else if primary < minimumbet then (
-    print_endline
-      ("Your primary bet must be at least "
-      ^ string_of_int minimumbet
-      ^ ".\n");
-    get_tie_bet balance primary)
-  else (
-    print_endline "Insufficient Funds. Try again.";
-    get_tie_bet balance primary)
+  try
+    let tie = int_of_string (read_line (print_endline "Tie Bet?")) in
+    if is_minimum (after_bet balance primary 0 0) && is_minimum primary
+    then { primary; tie; war = (0, War) }
+    else if not (is_minimum primary) then (
+      print_endline
+        ("Your primary bet must be at least "
+        ^ string_of_int minimumbet
+        ^ ".\n");
+      get_tie_bet balance primary)
+    else (
+      print_endline "Insufficient Funds. Try again.";
+      get_tie_bet balance primary)
+  with
+  | Sys_error f ->
+      print_string "Illegal dollar amount (whole dollars only).\n";
+      get_tie_bet balance primary
+  | Failure string ->
+      print_string "Illegal dollar amount (whole dollars only).\n";
+      get_tie_bet balance primary
 
 let rec get_war_bet balance primary tie =
-  let war = int_of_string (read_line (print_endline "\nWar Bet?")) in
-  if
-    after_bet balance primary tie 0 > minimumbet
-    && war >= primary && war >= minimumbet
-  then { primary; tie; war = (war, War) }
-  else if war < minimumbet then (
-    print_endline
-      ("Your war bet must be at least "
-      ^ string_of_int minimumbet
-      ^ ".\n");
-    get_war_bet balance primary tie)
-  else if war < primary then (
-    print_endline
-      "Your war bet must be at least as much as your initial bet.";
-    get_war_bet balance primary tie)
-  else (
-    print_endline "Insufficient Funds. Try again.";
-    get_war_bet balance primary tie)
+  try
+    let war = int_of_string (read_line (print_endline "\nWar Bet?")) in
+    if
+      is_minimum (after_bet (balance - primary) primary tie 0)
+      && war >= primary
+    then (
+      print_endline
+        ("AMT REMAINING AFTER: "
+        ^ string_of_int (after_bet (balance - primary) primary tie 0));
+      { primary; tie; war = (war, War) })
+    else if war < primary then (
+      print_endline
+        "Your war bet must be at least as much as your initial bet.";
+      get_war_bet balance primary tie)
+    else (
+      print_endline "Insufficient Funds. Try again.";
+      get_war_bet balance primary tie)
+  with
+  | Sys_error f ->
+      print_string "Illegal dollar amount (whole dollars only).\n";
+      get_war_bet balance primary tie
+  | Failure string ->
+      print_string "Illegal dollar amount (whole dollars only).\n";
+      get_war_bet balance primary tie
 
 let get_bet (kind : bet) balance primary tie war : totalbet =
   match kind with
@@ -124,8 +147,9 @@ let war_card_dealing currentbet : int =
       print_endline ("You won " ^ string_of_int combined);
       war_bet)
     else if comparecard = -1 then (
-      print_endline ("You lost " ^ string_of_int war_bet);
-      -war_bet)
+      print_endline
+        ("You lost " ^ string_of_int (war_bet + currentbet.primary));
+      -(war_bet + currentbet.primary))
     else if comparecard = 0 then (
       print_endline ("You won " ^ string_of_int (2 * war_bet));
       2 * war_bet)
@@ -151,12 +175,13 @@ let initial_card_dealing balance currentbet : t =
       {
         winnings =
           tie_winnings
-          + war_card_dealing (war_betting balance currentbet);
+          + war_card_dealing
+              (war_betting (balance + tie_winnings) currentbet);
       })
   else raise DealingError
 
 let war balance : t =
-  print_endline "Welcome to War.";
+  print_endline "\nWelcome to War.";
   print_endline Constants.war_help_string;
   let currentbet = initial_betting balance in
   initial_card_dealing balance currentbet

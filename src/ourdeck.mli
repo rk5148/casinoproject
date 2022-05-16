@@ -57,3 +57,8 @@ val string_of_deck : card list -> string
 val play_deck : unit -> unit
 (** [play_deck] deals 7 random cards and prints string representations
     of all to console *)
+
+val pull_two_compare : string -> string -> int
+(** [pull_two_compare player1 player2] deals a random card from a deck
+    to player1 and player2, announces those cards, and compares them,
+    returning either : 1 (if p1 > p2), -1 (if p1 < p2), or 0 (if p1=p2) *)

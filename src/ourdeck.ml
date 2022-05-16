@@ -100,6 +100,14 @@ let deck_without_cards
   let c card = if List.mem card cards_list then false else true in
   List.filter c current_deck
 
+let pull_two_compare player1 player2 =
+  let deck = make_deck in
+  let player1card = List.nth (pull_card deck 1) 0 in
+  let player2card = List.nth (pull_card deck 1) 0 in
+  print_endline ("\n" ^ player1 ^ " : " ^ string_of_card player1card);
+  print_endline (player2 ^ " : " ^ string_of_card player1card ^ "\n");
+  compare_card player1card player1card
+
 (*STARTING BACCARAT RIGHT HERE IDIOTS*)
 
 let bacc_score card =

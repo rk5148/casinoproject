@@ -58,6 +58,8 @@ val play_deck : unit -> unit
 (** [play_deck] deals 7 random cards and prints string representations
     of all to console *)
 
+val deck_without_cards : card list -> card list -> card list
+
 val pull_two_compare : string -> string -> int
 (** [pull_two_compare player1 player2] deals a random card from a deck
     to player1 and player2, announces those cards, and compares them,

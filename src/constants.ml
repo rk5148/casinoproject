@@ -86,6 +86,20 @@ let craps_dontpass_commands =
 let war_commands =
   [ "4"; "4 "; "War"; "war"; "WAR"; "War "; "war "; "WAR " ]
 
+let bacc_commands =
+  [
+    "5";
+    "5 ";
+    "Bacc";
+    "bacc";
+    "Baccarat";
+    "baccarat ";
+    "Baccarat ";
+    "baccarat ";
+    "BACCARAT";
+    "BACCARAT ";
+  ]
+
 let war_help_string = "To be written later"
 
 let yes_commands =
@@ -99,3 +113,4 @@ let help_commands =
 
 let game_commands =
   wof_commands @ slots_commands @ craps_commands @ war_commands
+  @ bacc_commands

@@ -1,7 +1,7 @@
 open OUnit2
 open Library
 
-(** [write the test plan shit here]*)
+(** [write the test plan stuff here]*)
 
 let spade = Deck.Spades
 let diamond = Deck.Diamonds

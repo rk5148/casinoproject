@@ -73,3 +73,28 @@ let play state (name_of_game : string) (all_games : string list) =
         }
       in
       Legal new_state
+
+let remove_prize (st : t2) (prize : string) =
+  List.filter (fun x -> x <> prize) (prizes st)
+
+let exchange (st : t2) (prize : string) =
+  match prize with
+  | "Car" ->
+      {
+        name = name st;
+        balance = balance st + 1000;
+        prize_list = remove_prize st prize;
+      }
+  | "Education" ->
+      {
+        name = name st;
+        balance = balance st + 50000;
+        prize_list = remove_prize st prize;
+      }
+  | "House" ->
+      {
+        name = name st;
+        balance = balance st + 10000;
+        prize_list = remove_prize st prize;
+      }
+  | _ -> st

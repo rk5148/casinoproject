@@ -24,6 +24,7 @@ type command =
   | Family
   | Balance
   | Prizes
+  | PrizeExchange
   | Play of object_phrase
 
 exception Empty

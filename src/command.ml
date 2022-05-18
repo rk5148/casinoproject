@@ -5,6 +5,7 @@ type command =
   | Family
   | Balance
   | Prizes
+  | PrizeExchange
   | Play of object_phrase
 
 exception Empty
@@ -37,6 +38,10 @@ let is_family_correctly_formed (command_list_without_quit : string list)
 
 let is_prizes_correctly_formed (command_list_without_quit : string list)
     =
+  if List.length command_list_without_quit > 0 then false else true
+
+let is_exchange_correctly_formed
+    (command_list_without_quit : string list) =
   if List.length command_list_without_quit > 0 then false else true
 
 let is_string_empty (command_list : string list) =
@@ -74,5 +79,12 @@ let parse str =
       is_prizes_correctly_formed
         (command_without_first (command_to_list str))
     then Prizes
+    else raise Malformed
+  else if first_element_of_command (command_to_list str) = "exchange"
+  then
+    if
+      is_prizes_correctly_formed
+        (command_without_first (command_to_list str))
+    then PrizeExchange
     else raise Malformed
   else raise Malformed

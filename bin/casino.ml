@@ -18,7 +18,8 @@ let get_command_from_user state =
     \ (3): Craps\n\
     \ (4): War\n\
     \ (5): Baccarat\n\
-    \ Valid commands: play ___, quit, balance, prizes\n\n\
+    \ \n\
+    \     Valid commands: play ___, quit, balance, prizes, exchange\n\n\
     \     > ";
   read_line ()
 
@@ -79,6 +80,13 @@ let rec play state =
             ^ string_list_to_string (State.prizes state) ", "
             ^ "\n");
           play state
+      | PrizeExchange ->
+          print_string
+            ("What prize do you want to exchange?" ^ "\nYour prizes: "
+            ^ string_list_to_string (State.prizes state) ", "
+            ^ "\n");
+          let p = read_line () in
+          play (State.exchange state p)
       | Play name_of_game -> (
           let result =
             State.play state

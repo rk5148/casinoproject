@@ -7,7 +7,15 @@ let rec string_list_to_string str =
   | h :: t -> String.lowercase_ascii h ^ " " ^ string_list_to_string t
 
 let all_games =
-  [ "wheel of fortune"; "slots"; "craps"; "war"; "baccarat" ]
+  [
+    "wheel of fortune";
+    "slots";
+    "craps";
+    "war";
+    "baccarat";
+    "blackjack";
+    "battleship";
+  ]
 
 let get_command_from_user state =
   print_string
@@ -18,7 +26,8 @@ let get_command_from_user state =
     \ (3): Craps\n\
     \ (4): War\n\
     \ (5): Baccarat\n\
-    \ (6): Craps\n\
+    \ (6): Blackjack\n\
+    \ (7): Battleship\n\
     \ \n\
     \     Valid commands: play ___, quit, balance, family, prizes, \
      exchange\n\n\
@@ -35,11 +44,6 @@ let get_bet_from_user state =
     ^ "\n");
   let bet = int_of_string (read_line ()) in
   if check_bet state bet then bet else -1
-
-(* let find_and_play_game state name = if name = "wheel of fortune" then
-   { name = state.name } Wheeloffortune.wheel_of_fortune state () (*
-   else if name = "slots" then Slots.slots () else if name = "deal\n 7"
-   then Deck.play_deck () *) else state *)
 
 let rec string_list_to_string lst divider =
   match lst with

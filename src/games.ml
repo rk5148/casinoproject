@@ -3,6 +3,7 @@ open Slots
 open Craps
 open War
 open Baccarat
+open Blackjack
 open Constants
 
 exception GameNotFound
@@ -39,12 +40,20 @@ let bacct_to_gt bacct =
 let crapst_to_gt crapst =
   { name = ""; balance = Craps.winnings crapst; prize_list = [] }
 
+let bkt_to_gt bkt =
+  { name = ""; balance = Blackjack.winnings bkt; prize_list = [] }
+
+let bshipt_to_gt bst =
+  { name = ""; balance = Battleship.winnings bst; prize_list = [] }
+
 let is_wof str = List.mem str Constants.wof_commands
 let is_slots str = List.mem str Constants.slots_commands
 let is_craps str = List.mem str Constants.craps_commands
 let is_war str = List.mem str Constants.war_commands
 let is_bacc str = List.mem str Constants.bacc_commands
 let is_craps str = List.mem str Constants.craps_commands
+let is_bk str = List.mem str Constants.bk_commands
+let is_bship str = List.mem str Constants.bship_commands
 
 let play (name_of_game : string) (balance : int) =
   if is_wof name_of_game then
@@ -55,4 +64,8 @@ let play (name_of_game : string) (balance : int) =
   else if is_bacc name_of_game then
     bacct_to_gt (Baccarat.baccarat balance)
   else if is_craps name_of_game then crapst_to_gt (Craps.craps balance)
+  else if is_bk name_of_game then
+    bkt_to_gt (Blackjack.blackjack balance)
+  else if is_bship name_of_game then
+    bshipt_to_gt (Battleship.battleship balance)
   else raise GameNotFound

@@ -100,8 +100,29 @@ let bacc_commands =
     "BACCARAT ";
   ]
 
-let craps_commands =
-  [ "6"; "6 "; "Craps"; "craps"; "CRAPS"; "Craps "; "craps "; "CRAPS " ]
+let bk_commands =
+  [
+    "6";
+    "6 ";
+    "Blackjack";
+    "blackjack";
+    "BLACKJACK";
+    "Blackjack ";
+    "blackjack ";
+    "BLACKJACK ";
+  ]
+
+let bship_commands =
+  [
+    "7";
+    "7 ";
+    "Battleship";
+    "battleship";
+    "BATTLESHIP";
+    "Battleship ";
+    "battleship ";
+    "BATTLESHIP ";
+  ]
 
 let war_help_string = "To be written later"
 
@@ -116,4 +137,4 @@ let help_commands =
 
 let game_commands =
   wof_commands @ slots_commands @ craps_commands @ war_commands
-  @ bacc_commands @ craps_commands
+  @ bacc_commands @ bk_commands @ bship_commands

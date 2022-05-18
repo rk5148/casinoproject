@@ -1,7 +1,6 @@
 exception BadValue of string
 exception Empty
 exception NotFound
-exception EmptyHand
 
 (** Type suit of the possible suits any given card can have*)
 type suit =

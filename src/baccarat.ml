@@ -7,29 +7,29 @@ type t = { winnings : int }
 
 let winnings st = st.winnings
 
-(*Either a valid bet or invalid bet*)
+(**Either a valid bet or invalid bet*)
 type bet_type =
   | Valid of int
   | Invalid
 
-(*Winner of the game, either Dealer, Player or Tie*)
+(**Winner of the game, either Dealer, Player or Tie*)
 type winner =
   | Dealer
   | Player
   | Tie
 
-(*Returns value of specified card*)
+(**Returns value of specified card*)
 let bacc_score card = value_of_card card
 
-(*returns value of all cards in specified hand*)
+(**returns value of all cards in specified hand*)
 let rec bacc_score_hand card_list =
   match card_list with
   | [] -> raise EmptyHand
   | [ x ] -> bacc_score x
   | o :: t -> bacc_score o + bacc_score_hand t
 
-(*Asks for user input on whether they want another card or not and
-  executes based on input*)
+(**Asks for user input on whether they want another card or not and
+   executes based on input*)
 let rec bacc_hit (x : card list) =
   print_endline "Would you like to hit? (y/n)\n";
   let new_command = read_line () in
@@ -40,22 +40,22 @@ let rec bacc_hit (x : card list) =
       print_endline "Invalid input";
       bacc_hit x
 
-(*Deals card to dealer*)
+(**Deals card to dealer*)
 let dealer_hit (dealer_hand : card list) (current_deck : card list) =
   let x = pull_card current_deck 1 in
   dealer_hand @ x
 
-(*Determines if dealer needs to be hit with another card and executes
-  based on dealer score and if user hit*)
+(**Determines if dealer needs to be hit with another card and executes
+   based on dealer score and if user hit*)
 let dealer_hit_stuff dealer_score hit_bool dealer_hand current_deck =
   if dealer_score < 5 && hit_bool = false then
     dealer_hit dealer_hand current_deck
   else dealer_hand
 
-(*Brings score from over 10 down to value less than 10 using mod*)
+(**Brings score from over 10 down to value less than 10 using mod*)
 let normalize_score score = if score > 9 then score mod 10 else score
 
-(*Determines winner of game based on player score and dealer score*)
+(**Determines winner of game based on player score and dealer score*)
 let determine_winner dealer_hand player_hand =
   let dealer_score = normalize_score (bacc_score_hand dealer_hand) in
   let player_score = normalize_score (bacc_score_hand player_hand) in
@@ -63,8 +63,8 @@ let determine_winner dealer_hand player_hand =
   else if player_score = dealer_score then Tie
   else Dealer
 
-(*Gets the bet amount the user wants to bet and makes sure they have the
-  money to make said bet*)
+(**Gets the bet amount the user wants to bet and makes sure they have
+   the money to make said bet*)
 let rec get_bet balance =
   try
     let bet =
@@ -84,12 +84,12 @@ let rec get_bet balance =
       print_string "Illegal dollar amount (whole dollars only).\n";
       get_bet balance
 
-(*Prints player and dealer scores*)
+(**Prints player and dealer scores*)
 let print_all_scores player_score dealer_score =
   print_endline ("Your score was: " ^ string_of_int player_score);
   print_endline ("Dealer score was: " ^ string_of_int dealer_score)
 
-(*Gives player money based on who won the game*)
+(**Gives player money based on who won the game*)
 let allocate_winnings winner bet_type player_score dealer_score =
   match bet_type with
   | Valid bet -> (

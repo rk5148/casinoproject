@@ -2,21 +2,21 @@ Random.self_init ()
 
 type t = { winnings : int }
 
-(*Returns current winnings of given state st*)
+(**Returns current winnings of given state st*)
 let winnings st = st.winnings
 
-(*Either a valid bet or invalid bet*)
+(**Either a valid bet or invalid bet*)
 type bet =
   | Valid of int
   | Invalid
 
-(*Winner of the game, either AI or Player*)
+(**Winner of the game, either AI or Player*)
 type winner =
   | AI
   | Player
 
-(*Gets the bet amount the user wants to bet and makes sure they have the
-  money to make said bet*)
+(**Gets the bet amount the user wants to bet and makes sure they have
+   the money to make said bet*)
 let rec get_bet balance =
   try
     let bet =
@@ -36,7 +36,7 @@ let rec get_bet balance =
       print_string "Illegal dollar amount (whole dollars only).\n";
       get_bet balance
 
-(*Gives player money based on who won the game*)
+(**Gives player money based on who won the game*)
 let allocate_winnings winner bet_type =
   match bet_type with
   | Valid bet -> (
@@ -51,7 +51,7 @@ let allocate_winnings winner bet_type =
           { winnings = 2 * bet })
   | Invalid -> failwith "Something's really messed up."
 
-(*Generates coordinates of AI's batteships*)
+(**Generates coordinates of AI's batteships*)
 let rec generate_coords coords board_size ship_num =
   if ship_num = List.length coords then coords
   else
@@ -62,7 +62,7 @@ let rec generate_coords coords board_size ship_num =
       generate_coords coords board_size ship_num
     else generate_coords (new_c :: coords) board_size ship_num
 
-(*Get board size from user input*)
+(**Get board size from user input*)
 let rec get_bs balance : int =
   try
     let bs =
@@ -81,7 +81,7 @@ let rec get_bs balance : int =
       print_string "Invalid input.\n";
       get_bs balance
 
-(*Get total number of ships from user input*)
+(**Get total number of ships from user input*)
 let rec get_num_ships bs : int =
   try
     let ns =
@@ -100,7 +100,7 @@ let rec get_num_ships bs : int =
       print_string "Invalid input.\n";
       get_num_ships bs
 
-(*Get location of user ships from user input*)
+(**Get location of user ships from user input*)
 let rec user_coords coords board_size ship_num : string list =
   if ship_num = List.length coords then coords
   else (
@@ -125,7 +125,7 @@ let rec user_coords coords board_size ship_num : string list =
       print_endline "Invalid input you clown. Try again.";
       user_coords coords board_size ship_num))
 
-(*User's turn in battleship game*)
+(**User's turn in battleship game*)
 let rec users_turn ai_ships user_ships board_size ships_tried =
   if List.length ai_ships = 0 then Player
   else if List.length user_ships = 0 then AI
@@ -153,7 +153,7 @@ let rec users_turn ai_ships user_ships board_size ships_tried =
       print_endline "Invalid. Try again.";
       users_turn ai_ships user_ships board_size ships_tried)
 
-(*AI's turn in battleship game*)
+(**AI's turn in battleship game*)
 and ai_turn ai_ships user_ships board_size ships_tried =
   if List.length user_ships = 0 then AI
   else if List.length ai_ships = 0 then Player

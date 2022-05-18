@@ -106,16 +106,6 @@ let rec comeout_notpass_bet bet is_pass point =
          accept Casino Cash.";
       comeout_notpass_bet bet is_pass point
 
-(* print_string "Place new bet: "; print_string "\n> "; match
-   int_of_string_opt (read_line ()) with | Some int -> if int <= bet &&
-   int > 0 then craps_point int is_pass false point else if bet = 0 then
-   begin print_endline "Thanks for playing!"; { winnings = 0 } end else
-   begin print_endline "You must bet an amount greater than or equal to
-   your \ original bet."; comeout_notpass_bet bet is_pass point end |
-   None -> print_endline "Please type in a valid bet less than or equal
-   to your \ original bet, or type in '0' to take down your bet. We only
-   \ accept Casino Cash."; comeout_notpass_bet bet is_pass point *)
-
 let rec comeout_pass_bet bet is_pass point =
   let valid_bet = get_bet bet in
   match valid_bet with
@@ -132,15 +122,6 @@ let rec comeout_pass_bet bet is_pass point =
         "Please type in a valid bet greater than or equal to your \
          original bet. We only accept Casino Cash.";
       comeout_pass_bet bet is_pass point
-
-(* print_string "\nPlace new bet: "; print_string "\n> "; match
-   int_of_string_opt (read_line ()) with | Some int -> if int >= bet
-   then craps_point int is_pass false point else begin print_endline
-   "You must bet an amount greater than or equal to your \ original
-   bet."; comeout_pass_bet bet is_pass point end | None -> print_endline
-   "Please type in a valid bet greater than or equal to your \ original
-   bet. We only accept Casino Cash."; comeout_pass_bet bet is_pass
-   point *)
 
 let rec comeout_bet bet is_pass point =
   if is_pass then begin

@@ -11,14 +11,15 @@ val rps_commands : string list
 val yes_commands : string list
 val no_commands : string list
 val help_commands : string list
+
 val game_commands : string list
-(* Above are all the commands that are valid inputs for their given
-   games*)
+(** Above are all the commands that are valid inputs for their given
+    games*)
 
 val craps_help_string : string
 val war_help_string : string
 
-(*Above are all strings that give some help to user to understand game*)
+(**Above are all strings that give some help to user to understand game*)
 
 val slot_win_amt : int
 (**Amount that you can win in a slots game*)

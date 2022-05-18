@@ -1,7 +1,31 @@
 open OUnit2
 open Library
 
-(* [write the test plan stuff here] *)
+(* Since our project is a essentially text-interface game, many of our
+   functions in the different modules relied on manual testing through
+   terminal. Specifically, except for Slots and OurDeck, we manually
+   tested every outcome for every other module. Another aspect that
+   forced us to use manual testing was the use of randomization in
+   certain functions, which made it impossible/trivial to truly check
+   them.
+
+   Therefore, functionality that does not fall under the above criteria
+   in Slots and OurDeck was tested automatically with OUnit. In
+   particular, we employed both black box and glass box testing for our
+   tests. For example, to compare two cards, we had to first compare two
+   identical cards, then two cards with the same value but different
+   suits, then two cards with the same suit but different value, and
+   finally two cards with the same value and different suits but in
+   different order to demonstrate that suits do not have rank. However,
+   we also ensured some random test cases too, especially in Ourdeck
+   where we had to check that suits did not affect certain aspects of
+   our functions such as comparing the values.
+
+   Overall, this form of testing demonstrates correctness for the system
+   because not only did we manually test the different possible game and
+   action outcomes to match what we expect, we also checked
+   functionality in OurDeck and Slots to ensure that all possible cases
+   were accounted for. *)
 
 let spade = Deck.Spades
 let diamond = Deck.Diamonds
@@ -438,6 +462,16 @@ let slots_tests =
       3000;
     total_winnings_test "1 2 3 1 2 3 1 2 3 wins 3000" 1 2 3 1 2 3 1 2 3
       3000;
+    total_winnings_test "1 1 1 1 0 1 1 1 1 wins 4000" 1 1 1 1 0 1 1 1 1
+      4000;
+    total_winnings_test "1 0 1 1 1 1 1 0 1 wins 5000" 1 0 1 1 1 1 1 0 1
+      5000;
+    total_winnings_test "1 1 1 0 1 0 1 1 1 wins 4000" 1 1 1 0 1 0 1 1 1
+      5000;
+    total_winnings_test "1 1 1 1 1 1 1 0 1 wins 6000" 1 1 1 1 1 1 1 0 1
+      6000;
+    total_winnings_test "1 0 1 1 1 1 1 1 1 wins 6000" 1 0 1 1 1 1 1 1 1
+      6000;
     total_winnings_test "1 1 1 1 1 1 1 1 1 wins 8000" 1 1 1 1 1 1 1 1 1
       8000;
   ]

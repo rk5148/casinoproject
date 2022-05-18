@@ -23,8 +23,7 @@ let value_of_card card = card.value
 let compare_card card1 card2 : int =
   if value_of_card card1 > value_of_card card2 then 1
   else if value_of_card card1 < value_of_card card2 then -1
-  else if value_of_card card1 = value_of_card card2 then 0
-  else raise (BadValue "Card Value Error")
+  else 0
 
 let make_card suit value =
   if value > 14 || value < 2 then
@@ -69,7 +68,8 @@ let rec pull_card deck number =
     representation of the card's value. Requires: [card] is a valid
     card.*)
 let is_face card =
-  if card.value > 14 then raise (BadValue "Value greater than 14")
+  if card.value > 14 || card.value < 2 then
+    raise (BadValue "Value greater than 14 or less than 2")
   else if card.value == 14 then "Ace"
   else if card.value == 13 then "King"
   else if card.value == 12 then "Queen"
@@ -105,4 +105,4 @@ let pull_two_compare player1 player2 =
   let player2card = List.nth (pull_card deck 1) 0 in
   print_endline ("\n" ^ player1 ^ " : " ^ string_of_card player1card);
   print_endline (player2 ^ " : " ^ string_of_card player2card ^ "\n");
-  compare_card player1card player1card
+  compare_card player1card player2card

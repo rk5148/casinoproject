@@ -53,7 +53,8 @@ let craps_help_string =
    the round is over. However, it can be increased after a point is \
    established. \n\
    A Don't Pass bet, once made, cannot be increased after a point is \
-   established, but it can be taken down or reduced. \n\
+   established, but it can be taken down (type in '0' when asked at \
+   that point to take down your bet) or reduced. \n\
   \ \n\
    Both the Pass and Don't Pass bets pay even money (e.g. you bet 100, \
    you win 100).\n\n"

@@ -1,7 +1,7 @@
 open OUnit2
 open Library
 
-(** [write the test plan stuff here]*)
+(* [write the test plan stuff here] *)
 
 let spade = Deck.Spades
 let diamond = Deck.Diamonds
@@ -11,6 +11,10 @@ let card_2ofspades = Deck.make_card spade 2
 let card_2ofdiamonds = Deck.make_card diamond 2
 let card_2ofhearts = Deck.make_card heart 2
 let card_2ofclubs = Deck.make_card club 2
+let card_7ofspades = Deck.make_card spade 7
+let card_7ofdiamonds = Deck.make_card diamond 7
+let card_7ofhearts = Deck.make_card heart 7
+let card_7ofclubs = Deck.make_card club 7
 let card_aceofspades = Deck.make_card spade 14
 let card_aceofdiamonds = Deck.make_card diamond 14
 let card_aceofhearts = Deck.make_card heart 14
@@ -24,8 +28,16 @@ let card_queenofdiamonds = Deck.make_card diamond 12
 let card_queenofhearts = Deck.make_card heart 12
 let card_queenofclubs = Deck.make_card club 12
 let spades_deck = Deck.make_suit spade 2
+let diamonds_deck = Deck.make_suit diamond 2
 let full_deck = Deck.make_deck
 
+(********************************************************************
+   End constants.
+ ********************************************************************)
+
+(** [make_card_test name card expected] constructs an OUnit test named
+    [name] that asserts the quality of [expected] with
+    [Deck.(string_of_card card)]. *)
 let make_card_test
     (name : string)
     (card : Deck.card)
@@ -35,6 +47,9 @@ let make_card_test
     Deck.(string_of_card card)
     ~printer:String.escaped
 
+(** [make_suit_test name suit value expected] constructs an OUnit test
+    named [name] that asserts the quality of [expected] with
+    [Deck.string_of_deck (Deck.make_suit suit value)]. *)
 let make_suit_test
     (name : string)
     (suit : Deck.suit)
@@ -45,6 +60,9 @@ let make_suit_test
     (Deck.string_of_deck (Deck.make_suit suit value))
     ~printer:String.escaped
 
+(** [remove_card_test card_list card expected] constructs an OUnit test
+    named [name] that asserts the quality of [expected] with
+    [Deck.string_of_deck (Deck.remove_card card_list card)]. *)
 let remove_card_test
     (name : string)
     (card_list : Deck.card list)
@@ -54,6 +72,54 @@ let remove_card_test
   assert_equal expected
     (Deck.string_of_deck (Deck.remove_card card_list card))
     ~printer:String.escaped
+
+(** [compare_card_test card1 card2 expected] constructs an OUnit test
+    named [name] that asserts the quality of [expected] with
+    [Deck.compare_card card1 card2]. *)
+let compare_card_test
+    (name : string)
+    (card1 : Deck.card)
+    (card2 : Deck.card)
+    (expected : int) =
+  name >:: fun _ ->
+  assert_equal expected
+    (Deck.compare_card card1 card2)
+    ~printer:string_of_int
+
+(** [deck_without_cards_test cards_list current_deck expected]
+    constructs an OUnit test named [name] that asserts the quality of
+    [expected] with
+    [Deck.string_of_deck
+       (Deck.deck_without_cards cards_list current_deck)]. *)
+let deck_without_cards_test
+    (name : string)
+    (cards_list : Deck.card list)
+    (current_deck : Deck.card list)
+    (expected : string) =
+  name >:: fun _ ->
+  assert_equal expected
+    (Deck.string_of_deck
+       (Deck.deck_without_cards cards_list current_deck))
+    ~printer:String.escaped
+
+(** [slots_winnings_test cards_list current_deck expected] constructs an
+    OUnit test named [name] that asserts the quality of [expected] with
+    [Deck.string_of_deck
+       (Deck.deck_without_cards cards_list current_deck)]. *)
+let deck_without_cards_test
+    (name : string)
+    (cards_list : Deck.card list)
+    (current_deck : Deck.card list)
+    (expected : string) =
+  name >:: fun _ ->
+  assert_equal expected
+    (Deck.string_of_deck
+       (Deck.deck_without_cards cards_list current_deck))
+    ~printer:String.escaped
+
+(********************************************************************
+  End helper functions.
+  ********************************************************************)
 
 let ourdeck_tests =
   [
@@ -151,6 +217,14 @@ let ourdeck_tests =
        Ace of Spades\n";
     remove_card_test "remove 2 of spades from an empty deck of cards" []
       card_2ofspades "";
+    remove_card_test
+      "remove 2 of diamonds from a deck with only 2 of spades"
+      [ card_2ofspades ] card_2ofdiamonds "2 of Spades\n";
+    remove_card_test
+      "remove 2 of hearts from a deck with only all 13 spades"
+      (Deck.make_suit spade 2)
+      card_2ofhearts
+      (Deck.string_of_deck spades_deck);
     remove_card_test "remove ace of spades from a full 52 card deck"
       full_deck card_aceofspades
       "2 of Spades\n\
@@ -204,7 +278,102 @@ let ourdeck_tests =
        Queen of Clubs\n\
        King of Clubs\n\
        Ace of Clubs\n";
+    compare_card_test "comparing two identical cards" card_2ofclubs
+      card_2ofclubs 0;
+    compare_card_test
+      "comparing two cards with the same value but different suits"
+      card_2ofclubs card_2ofhearts 0;
+    compare_card_test
+      "comparing two cards with different values (c1>c2) but same suit"
+      card_7ofclubs card_2ofclubs 1;
+    compare_card_test
+      "comparing two cards with different values (c1<c2) but same suit"
+      card_2ofclubs card_7ofclubs (-1);
+    compare_card_test
+      "comparing two cards with different values and suits (c1>c2)"
+      card_7ofhearts card_2ofclubs 1;
+    compare_card_test
+      "comparing two cards with different values and suits (c1<c2)"
+      card_2ofclubs card_7ofhearts (-1);
+    compare_card_test
+      "comparing two cards with different values and suits (c1>c2) to \
+       show that suits have no rank"
+      card_7ofclubs card_2ofhearts 1;
+    compare_card_test
+      "comparing two cards with different values and suits (c1<c2) to \
+       show that suits have no rank"
+      card_2ofhearts card_7ofclubs (-1);
+    deck_without_cards_test
+      "filtering an empty card deck with an empty card deck" [] [] "";
+    deck_without_cards_test
+      "filtering an empty card deck with a deck with 2 of spades"
+      [ card_2ofspades ] [] "";
+    deck_without_cards_test
+      "filtering a deck with only 2 of spades with a deck with only 2 \
+       of spades"
+      [ card_2ofspades ] [ card_2ofspades ] "";
+    deck_without_cards_test
+      "filtering a deck with only 2 of clubs with a deck with only 2 \
+       of spades"
+      [ card_2ofclubs ] [ card_2ofspades ] "2 of Spades\n";
+    deck_without_cards_test
+      "filtering a deck with only 2 of spades with a spades-only deck"
+      spades_deck [ card_2ofspades ] "";
+    deck_without_cards_test
+      "filtering a deck with only 2 of spades with a diamonds-only \
+       deck "
+      diamonds_deck [ card_2ofspades ] "2 of Spades\n";
+    deck_without_cards_test
+      "filtering a spades-only deck with a spades-only" spades_deck
+      spades_deck "";
+    deck_without_cards_test
+      "filtering a spades-only deck with a diamonds-only" diamonds_deck
+      spades_deck
+      (Deck.string_of_deck spades_deck);
+    deck_without_cards_test
+      "filtering a full 52-card deck with a diamonds-only deck"
+      diamonds_deck full_deck
+      "2 of Spades\n\
+       3 of Spades\n\
+       4 of Spades\n\
+       5 of Spades\n\
+       6 of Spades\n\
+       7 of Spades\n\
+       8 of Spades\n\
+       9 of Spades\n\
+       10 of Spades\n\
+       Jack of Spades\n\
+       Queen of Spades\n\
+       King of Spades\n\
+       Ace of Spades\n\
+       2 of Hearts\n\
+       3 of Hearts\n\
+       4 of Hearts\n\
+       5 of Hearts\n\
+       6 of Hearts\n\
+       7 of Hearts\n\
+       8 of Hearts\n\
+       9 of Hearts\n\
+       10 of Hearts\n\
+       Jack of Hearts\n\
+       Queen of Hearts\n\
+       King of Hearts\n\
+       Ace of Hearts\n\
+       2 of Clubs\n\
+       3 of Clubs\n\
+       4 of Clubs\n\
+       5 of Clubs\n\
+       6 of Clubs\n\
+       7 of Clubs\n\
+       8 of Clubs\n\
+       9 of Clubs\n\
+       10 of Clubs\n\
+       Jack of Clubs\n\
+       Queen of Clubs\n\
+       King of Clubs\n\
+       Ace of Clubs\n";
   ]
 
+let slots_tests = []
 let tests = "test suite for A1" >::: List.flatten [ ourdeck_tests ]
 let _ = run_test_tt_main tests

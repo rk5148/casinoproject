@@ -2,6 +2,10 @@ type t
 
 val winnings : t -> int
 
+type bet =
+  | Valid of int
+  | Invalid
+
 val roll_two_dice : int -> int
 (** [roll_two_dice num] is the sum of rolling two ([num]+1)-sided dice
     and prints out each roll as well as the sum. Requires: [num] is
@@ -36,7 +40,7 @@ val comeout_bet : int -> bool -> int -> t
     than 0 and less than or equal to the total amount of money the
     player has.*)
 
-val craps_come_out : int -> bool -> t
+val craps_come_out : bet -> bool -> t
 (** [craps_come_out bet is_pass] is the text interface for the come-out
     phase of Craps, which based on certain rolls and [is_pass] will
     result in a loss of [bet], a win of 2*[bet], or the transition into

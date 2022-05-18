@@ -4,7 +4,7 @@ type t = { winnings : int }
 
 let winnings st = st.winnings
 
-type bet_type =
+type bet =
   | Valid of int
   | Invalid
 

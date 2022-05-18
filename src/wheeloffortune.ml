@@ -36,9 +36,3 @@ let wheel_of_fortune () =
   let x = Random.int 4 in
   prize_to_string (List.nth prize_list x);
   { prize = prize_id (List.nth prize_list x) }
-(* State.new_state_helper st.balance st.name st.family_status (prize_id
-   (List.nth prize_list x) :: st.prize_list) *)
-
-(* print_endline "Would you like to spin again?"; read_line () *)
-(* in if input = "Yes" || input = "yes" then wheel_of_fortune () else
-   Casino.main *)

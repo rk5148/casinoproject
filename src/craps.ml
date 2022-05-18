@@ -4,7 +4,7 @@ open Constants
 
 type t = { winnings : int }
 
-let winnings state = state.winnings
+let winnings st = st.winnings
 let help_string = Constants.craps_help_string
 
 let roll_two_dice num =

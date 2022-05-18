@@ -100,6 +100,9 @@ let bacc_commands =
     "BACCARAT ";
   ]
 
+let craps_commands =
+  [ "6"; "6 "; "Craps"; "craps"; "CRAPS"; "Craps "; "craps "; "CRAPS " ]
+
 let war_help_string = "To be written later"
 
 let yes_commands =
@@ -113,4 +116,4 @@ let help_commands =
 
 let game_commands =
   wof_commands @ slots_commands @ craps_commands @ war_commands
-  @ bacc_commands
+  @ bacc_commands @ craps_commands

@@ -18,6 +18,7 @@ let get_command_from_user state =
     \ (3): Craps\n\
     \ (4): War\n\
     \ (5): Baccarat\n\
+    \ (6): Craps\n\
     \ \n\
     \     Valid commands: play ___, quit, balance, prizes, exchange\n\n\
     \     > ";

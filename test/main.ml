@@ -102,20 +102,42 @@ let deck_without_cards_test
        (Deck.deck_without_cards cards_list current_deck))
     ~printer:String.escaped
 
-(** [slots_winnings_test cards_list current_deck expected] constructs an
-    OUnit test named [name] that asserts the quality of [expected] with
-    [Deck.string_of_deck
-       (Deck.deck_without_cards cards_list current_deck)]. *)
-let deck_without_cards_test
+(** [slots_winnings_test slot1 slot2 slot3] constructs an OUnit test
+    named [name] that asserts the quality of [expected] with
+    [Slots.slots_winnings slot1 slot2 slot3]. *)
+let slots_winnings_test
     (name : string)
-    (cards_list : Deck.card list)
-    (current_deck : Deck.card list)
-    (expected : string) =
+    (slot1 : int)
+    (slot2 : int)
+    (slot3 : int)
+    (expected : int) =
   name >:: fun _ ->
   assert_equal expected
-    (Deck.string_of_deck
-       (Deck.deck_without_cards cards_list current_deck))
-    ~printer:String.escaped
+    (Slots.slots_winnings slot1 slot2 slot3)
+    ~printer:string_of_int
+
+(** [total_winnings_test slot1 slot2 slot3 slot4 slot5 slot6 slot7 slot8 slot9]
+    constructs an OUnit test named [name] that asserts the quality of
+    [expected] with
+    [Deck.string_of_deck
+       (Deck.deck_without_cards cards_list current_deck)]. *)
+let total_winnings_test
+    (name : string)
+    (slot1 : int)
+    (slot2 : int)
+    (slot3 : int)
+    (slot4 : int)
+    (slot5 : int)
+    (slot6 : int)
+    (slot7 : int)
+    (slot8 : int)
+    (slot9 : int)
+    (expected : int) =
+  name >:: fun _ ->
+  assert_equal expected
+    (Slots.total_winnings slot1 slot2 slot3 slot4 slot5 slot6 slot7
+       slot8 slot9)
+    ~printer:string_of_int
 
 (********************************************************************
   End helper functions.
@@ -374,6 +396,53 @@ let ourdeck_tests =
        Ace of Clubs\n";
   ]
 
-let slots_tests = []
-let tests = "test suite for A1" >::: List.flatten [ ourdeck_tests ]
+let slots_tests =
+  [
+    slots_winnings_test "1 1 1 wins 1000" 1 1 1 1000;
+    slots_winnings_test "1 0 1 wins 0" 1 0 1 0;
+    slots_winnings_test "1 1 0 wins 0" 1 1 0 0;
+    total_winnings_test "1 2 3 4 5 6 7 8 9 wins 0" 1 2 3 4 5 6 7 8 9 0;
+    total_winnings_test "1 0 1 0 2 0 1 0 1 wins 0" 1 0 1 0 2 0 1 0 1 0;
+    total_winnings_test "1 1 0 1 2 1 0 1 1 wins 0" 1 1 0 1 2 1 0 1 1 0;
+    total_winnings_test "1 1 1 4 5 6 7 8 9 wins 1000" 1 1 1 4 5 6 7 8 9
+      1000;
+    total_winnings_test "1 2 3 4 4 4 7 8 9 wins 1000" 1 2 3 4 4 4 7 8 9
+      1000;
+    total_winnings_test "1 2 3 4 5 6 7 7 7 wins 1000" 1 2 3 4 5 6 7 7 7
+      1000;
+    total_winnings_test "1 2 3 1 5 6 1 8 9 wins 1000" 1 2 3 1 5 6 1 8 9
+      1000;
+    total_winnings_test "1 2 3 4 2 6 7 2 9 wins 1000" 1 2 3 4 2 6 7 2 9
+      1000;
+    total_winnings_test "1 2 3 4 5 3 7 8 3 wins 1000" 1 2 3 4 5 3 7 8 3
+      1000;
+    total_winnings_test "1 2 3 4 1 6 7 8 1 wins 1000" 1 2 3 4 1 6 7 8 1
+      1000;
+    total_winnings_test "1 2 3 4 3 6 3 8 9 wins 1000" 1 2 3 4 3 6 3 8 9
+      1000;
+    total_winnings_test "1 1 1 4 4 4 7 8 9 wins 2000" 1 1 1 4 4 4 7 8 9
+      2000;
+    total_winnings_test "1 1 1 4 5 6 7 7 7 wins 2000" 1 1 1 4 5 6 7 7 7
+      2000;
+    total_winnings_test "1 2 3 4 4 4 7 7 7 wins 2000" 1 2 3 4 4 4 7 7 7
+      2000;
+    total_winnings_test "1 2 3 1 2 6 1 2 9 wins 2000" 1 2 3 1 2 6 1 2 9
+      2000;
+    total_winnings_test "1 2 3 4 2 3 7 2 3 wins 2000" 1 2 3 4 2 3 7 2 3
+      2000;
+    total_winnings_test "1 2 3 1 5 3 1 8 3 wins 2000" 1 2 3 1 5 3 1 8 3
+      2000;
+    total_winnings_test "1 2 1 4 1 6 1 8 1 wins 2000" 1 2 1 4 1 6 1 8 1
+      2000;
+    total_winnings_test "1 1 1 4 4 4 7 7 7 wins 3000" 1 1 1 4 4 4 7 7 7
+      3000;
+    total_winnings_test "1 2 3 1 2 3 1 2 3 wins 3000" 1 2 3 1 2 3 1 2 3
+      3000;
+    total_winnings_test "1 1 1 1 1 1 1 1 1 wins 8000" 1 1 1 1 1 1 1 1 1
+      8000;
+  ]
+
+let tests =
+  "test suite for A1" >::: List.flatten [ ourdeck_tests; slots_tests ]
+
 let _ = run_test_tt_main tests

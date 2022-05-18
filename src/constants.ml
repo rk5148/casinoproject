@@ -139,7 +139,7 @@ let rps_commands =
     "Rock Paper Scissor ";
   ]
 
-let war_help_string = "To be written later"
+let war_help_string = "Game of WAR!"
 
 let yes_commands =
   [ "y"; "y "; "Y"; "Y "; "yes"; "yes "; "Yes"; "Yes "; "YES"; "YES " ]
@@ -153,3 +153,5 @@ let help_commands =
 let game_commands =
   wof_commands @ slots_commands @ craps_commands @ war_commands
   @ bacc_commands @ bk_commands @ bship_commands @ rps_commands
+
+let slot_win_amt = 1000

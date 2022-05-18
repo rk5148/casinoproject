@@ -15,6 +15,7 @@ let all_games =
     "baccarat";
     "blackjack";
     "battleship";
+    "rps";
   ]
 
 let get_command_from_user state =
@@ -28,6 +29,7 @@ let get_command_from_user state =
     \ (5): Baccarat\n\
     \ (6): Blackjack\n\
     \ (7): Battleship\n\
+    \ (8): Rock Paper Scissors\n\
     \ \n\
     \     Valid commands: play ___, quit, balance, family, prizes, \
      exchange\n\n\

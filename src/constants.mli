@@ -8,6 +8,7 @@ val war_commands : string list
 val bacc_commands : string list
 val bk_commands : string list
 val bship_commands : string list
+val rps_commands : string list
 val war_help_string : string
 val yes_commands : string list
 val no_commands : string list

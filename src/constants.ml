@@ -124,6 +124,20 @@ let bship_commands =
     "BATTLESHIP ";
   ]
 
+let rps_commands =
+  [
+    "8";
+    "8 ";
+    "Rps";
+    "rps";
+    "RPS";
+    "Rps ";
+    "rps ";
+    "RPS ";
+    "Rock Paper Scissor";
+    "Rock Paper Scissor ";
+  ]
+
 let war_help_string = "To be written later"
 
 let yes_commands =
@@ -137,4 +151,4 @@ let help_commands =
 
 let game_commands =
   wof_commands @ slots_commands @ craps_commands @ war_commands
-  @ bacc_commands @ bk_commands @ bship_commands
+  @ bacc_commands @ bk_commands @ bship_commands @ rps_commands

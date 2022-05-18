@@ -67,10 +67,10 @@ let rec get_bs balance : int =
       get_bs balance)
   with
   | Sys_error _ ->
-      print_string "Illegal dollar amount (whole dollars only).\n";
+      print_string "Invalid input.\n";
       get_bs balance
   | Failure _ ->
-      print_string "Illegal dollar amount (whole dollars only).\n";
+      print_string "Invalid input.\n";
       get_bs balance
 
 let rec get_num_ships bs : int =
@@ -85,10 +85,10 @@ let rec get_num_ships bs : int =
       get_num_ships bs)
   with
   | Sys_error _ ->
-      print_string "Illegal dollar amount (whole dollars only).\n";
+      print_string "Invalid input.\n";
       get_num_ships bs
   | Failure _ ->
-      print_string "Illegal dollar amount (whole dollars only).\n";
+      print_string "Invalid input.\n";
       get_num_ships bs
 
 let rec user_coords coords board_size ship_num : string list =

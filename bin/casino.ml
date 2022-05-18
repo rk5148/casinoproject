@@ -20,7 +20,8 @@ let get_command_from_user state =
     \ (5): Baccarat\n\
     \ (6): Craps\n\
     \ \n\
-    \     Valid commands: play ___, quit, balance, prizes, exchange\n\n\
+    \     Valid commands: play ___, quit, balance, family, prizes, \
+     exchange\n\n\
     \     > ";
   read_line ()
 
@@ -66,8 +67,8 @@ let rec play state =
             ^ "\nTHANKS FOR PLAYING :)\n\n");
           Stdlib.exit 0
       | Family ->
-          (* print_string ("Your familial status: " ^ State.family state
-             ^ "\n"); *)
+          print_string
+            ("Your familial status: " ^ State.family state ^ "\n");
           play state
       | Balance ->
           print_string

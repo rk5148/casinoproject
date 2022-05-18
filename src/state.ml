@@ -5,7 +5,7 @@ open Constants
 type t2 = {
   name : string;
   balance : int;
-  (* family_status : string; *)
+  family_status : string;
   prize_list : string list;
 }
 
@@ -21,14 +21,13 @@ let init_state name start_money =
   {
     name;
     balance = start_money;
-    (* family_status = "Lonely"; *)
+    family_status = "Lonely";
     prize_list = [];
   }
 
 let name st = st.name
 let balance st = st.balance
-
-(* let family st = st.family_status *)
+let family st = st.family_status
 let prizes st = st.prize_list
 
 (* let rec string_list_to_string lst = match lst with | [] -> "" | [ x ]
@@ -51,6 +50,7 @@ let gt_to_st (gt : Games.t) =
   {
     name = Games.name gt;
     balance = Games.balance gt;
+    family_status = "Lonely";
     prize_list = Games.prizes gt;
   }
 
@@ -69,6 +69,7 @@ let play state (name_of_game : string) (all_games : string list) =
         {
           name = name state ^ name cleaned_up;
           balance = balance cleaned_up + balance state;
+          family_status = "Lonely";
           prize_list = prizes cleaned_up @ prizes state;
         }
       in
@@ -80,21 +81,29 @@ let remove_prize (st : t2) (prize : string) =
 let exchange (st : t2) (prize : string) =
   match prize with
   | "Car" ->
+      print_endline "Exchanging Car for $1000";
       {
         name = name st;
         balance = balance st + 1000;
+        family_status = "Lonely";
         prize_list = remove_prize st prize;
       }
   | "Education" ->
+      print_endline "Exchanging Education for $50000";
       {
         name = name st;
         balance = balance st + 50000;
+        family_status = "Lonely";
         prize_list = remove_prize st prize;
       }
   | "House" ->
+      print_endline "Exchanging House for $10000";
       {
         name = name st;
         balance = balance st + 10000;
+        family_status = "Lonely";
         prize_list = remove_prize st prize;
       }
-  | _ -> st
+  | _ ->
+      print_endline "Invalid input, no exchange occurred.";
+      st
